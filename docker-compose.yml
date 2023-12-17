@@ -1,8 +1,25 @@
 services:
   cakephp:
-    container_name: cakephp-app
+    container_name: cakephp
     build: .
     volumes:
-      - ./cake-app:/var/www/html
+      - ./:/var/www/html
     ports:
       - 8000:80
+    depends_on:
+      - pgsql
+
+  pgsql:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: cakephp
+    volumes:
+      - pgsql:/var/lib/postgresql/data
+
+volumes:
+  pgsql:
+    driver: local
